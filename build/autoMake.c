@@ -1,15 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <dirent.h>
-
-#define MAX_FILES 100
-#define MAX_FILENAME 256
-
-typedef struct {
-    char c_file[MAX_FILENAME];
-    char h_file[MAX_FILENAME];
-} SourceFile;
+#include "header.h"
 
 int main() {
     DIR *dir;
@@ -35,7 +24,7 @@ int main() {
                 files[file_count].h_file[0] = '\0';
                 file_count++;
                 if (file_count >= MAX_FILES) {
-                    fprintf(stderr, "Prea multe fișiere sursă!\n");
+                    fprintf(stderr, "Prea multe fisiere sursa!\n");
                     break;
                 }
             }
@@ -47,7 +36,7 @@ int main() {
     closedir(dir);
 
     if (strlen(main_file) == 0) {
-        fprintf(stderr, "Nu s-a găsit main.c în director.\n");
+        fprintf(stderr, "Nu s-a gasit main.c in director.\n");
         return 1;
     }
 
@@ -66,7 +55,7 @@ int main() {
 
     FILE *makefile = fopen("Makefile", "w");
     if (makefile == NULL) {
-        perror("Nu s-a putut crea fișierul Makefile");
+        perror("Nu s-a putut crea fisierul Makefile");
         return 1;
     }
 
@@ -77,7 +66,7 @@ int main() {
     for (int i = 0; i < file_count; i++) {
         char obj_file[MAX_FILENAME];
         snprintf(obj_file, sizeof(obj_file), "%s", files[i].c_file);
-        obj_file[strlen(obj_file) - 2] = '\0'; // Elimină extensia .c
+        obj_file[strlen(obj_file) - 2] = '\0'; 
         fprintf(makefile, " %s.o", obj_file);
     }
     fprintf(makefile, " main.o\n\n");
@@ -113,7 +102,7 @@ int main() {
     fprintf(makefile, "\trm -f $(OBJS) $(TARGET)\n");
 
     fclose(makefile);
-    printf("Fișierul Makefile a fost generat cu succes, excluzând %s!\n", self_file);
+    printf("Fisierul Makefile a fost generat cu succes, excluzand %s!\n", self_file);
 
     return 0;
 }
